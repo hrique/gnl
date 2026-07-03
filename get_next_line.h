@@ -6,7 +6,7 @@
 /*   By: hesantan <hesantan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:40 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/02 17:10:00 by hesantan         ###   ########.fr       */
+/*   Updated: 2026/07/03 17:51:24 by hesantan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,3 +14,5 @@
 #define BUFFER_SIZE 5
 
 #endif
+
+# include <limits.h>
