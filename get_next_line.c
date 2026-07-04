@@ -3,72 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hesantan <hesantan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hrique <hrique@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:35 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/03 18:00:25 by hesantan         ###   ########.fr       */
+/*   Updated: 2026/07/04 17:45:24 by hrique           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//read(fd, buffer, tamanho)
-//verificar se fd nao esta vazio, dar free, malloc
+#include "get_next_line.h"
+
+static char	*free_and_null(char *reading, char *storage)
+{
+	free(reading);
+	free(storage);
+	return (NULL);
+}
 
 char	*get_next_line(int fd)
 {
-	static char	*storage; // guarda o resultado do que foi lido
-	if (fd == -1 || fd > OPEN_MAX)
+	char		*line;
+	static char	*storage;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	char		*line; //guarda uma linha
-	storage = read_line(storage, fd); // manda o arquivo recebido para ser lido
-	line = get_line(storage); //retorno do get_line
+	if (!storage)
+		storage = ft_calloc(1, sizeof(char));
+	storage = read_line(storage, fd);
+	line = get_line(storage, line);
+	if (!line)
+	{
+		free(line);
+		return (NULL);
+	}
 	storage = update_storage(storage);
-	return(line); //retorna a linha para o usuario (encerra a funçao)
+	return (line);
 }
 
-//ssize_t read(int fd, void *buf, size_t count)
-
-static read_line(char *storage, int fd) //passa o que ela fez char	*get_next_line(int fd);
+static char	*read_line(char *storage, int fd)
 {
-	//guarda o resultado do que foi lido para o get_line antes do '\n'
-	long	bytes_lidos;
-	char	*reading; //alocar o tamanho do reading dentro do loop
+	unsigned int	readed_bytes;
+	char			*reading;
 
-	while ("nao chegou no \n")
+	reading = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	readed_bytes = 1;
+	while (!ft_strchr(storage, '\n') && (readed_bytes > 0))
 	{
-		bytes_lidos = read(fd, reading, BUFFER_SIZE); //conta quantos bytes lidos
-		storage = ft_strjoin(storage, reading); //concatena o storage com o que foi lido
+		readed_bytes = read(fd, reading, BUFFER_SIZE);
+		if (readed_bytes == 0)
+			return (free_and_null(reading, storage));
+		storage = ft_strjoin(storage, reading);
+		if (!storage)
+			return (free_and_null(reading, NULL));
 	}
+	free(reading);
 	return (storage);
 }
 
-static get_line(char *storage) //Extrair o que o read leu
+static char	*get_line(char *storage, char *line)
 {
-	int		i;
-	char	*str;
+	int	i;
 
 	i = 0;
 	while (storage[i] != '\n' && storage[i])
 	{
 		i++;
 	}
-	str = ft_substr(storage, 0, i); //pegar tudo antes do \n
-	return (str);
+	line = ft_calloc(i, sizeof(char));
+	line = ft_substr(storage, 0, i);
+	return (line);
 }
 
-static update_storage(char *storage) //se tem alguma coisa depois do \n ele guarda essa coisa
+static char	*update_storage(char *storage)
 {
 	char	*str;
 	int		i;
 	int		j;
 
+	if (!storage)
+		return (NULL);
 	i = 0;
 	while (storage[i])
 		i++;
 	j = 0;
-	while (storage[j] != '\n')
+	while (storage[j] != '\n' && storage[j])
 		j++;
-	if (storage[j] == '\0')
-		return (NULL);
 	str = ft_substr(storage, j, (i - j));
 	return (str);
 }
