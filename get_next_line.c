@@ -6,7 +6,7 @@
 /*   By: hrique <hrique@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:35 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/04 17:45:24 by hrique           ###   ########.fr       */
+/*   Updated: 2026/07/04 17:50:14 by hrique           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*free_and_null(char *reading, char *storage)
 	return (NULL);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd) //aaaa
 {
 	char		*line;
 	static char	*storage;
