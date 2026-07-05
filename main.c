@@ -6,7 +6,7 @@
 /*   By: hrique <hrique@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:56:19 by hrique            #+#    #+#             */
-/*   Updated: 2026/07/04 18:52:36 by hrique           ###   ########.fr       */
+/*   Updated: 2026/07/04 21:55:56 by hrique           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(void)
 		free(line);
 		line = get_next_line(fd);
 	}
+	printf("\n");
 	close(fd);
 	return (0);
 }

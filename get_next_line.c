@@ -6,7 +6,7 @@
 /*   By: hrique <hrique@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:35 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/04 21:24:18 by hrique           ###   ########.fr       */
+/*   Updated: 2026/07/04 21:54:56 by hrique           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ char	*get_next_line(int fd)
 	storage = read_line(storage, fd);
 	line = get_line(storage);
 	if (!line)
-	{
-		free(line);
-		return (NULL);
-	}
+		return (free_and_null(NULL, storage));
 	storage = update_storage(storage);
 	return (line);
 }
@@ -47,20 +44,23 @@ static char	*read_line(char *storage, int fd)
 {
 	ssize_t	readed_bytes;
 	char	*reading;
+	char	*tmp;
 
 	reading = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if(!reading)
+		return (free_and_null(NULL, storage));
 	readed_bytes = 1;
 	while (!ft_strchr(storage, '\n') && (readed_bytes != 0))
 	{
 		readed_bytes = read(fd, reading, BUFFER_SIZE);
 		if (readed_bytes == 0)
-		{
-			free(reading);
-			return (storage);
-		}
-		storage = ft_strjoin(storage, reading);
-		if (!storage)
+			return (free(reading), storage);
+		reading[readed_bytes] = '\0';
+		tmp = ft_strjoin(storage, reading);
+		if (!tmp)
 			return (free_and_null(reading, NULL));
+		free(storage);
+		storage = tmp;
 	}
 	free(reading);
 	return (storage);
@@ -69,19 +69,15 @@ static char	*read_line(char *storage, int fd)
 static char	*get_line(char *storage)
 {
 	int		i;
-	char	*ptr;
 
 	if (!storage || storage[0] == '\0')
 		return (NULL);
 	i = 0;
 	while (storage[i] != '\n' && storage[i])
-	{
 		i++;
-	}
 	if (storage[i] == '\n')
 		i++;
-	ptr = ft_substr(storage, 0, i);
-	return (ptr);
+	return (ft_substr(storage, 0, i));
 }
 
 static char	*update_storage(char *storage)
