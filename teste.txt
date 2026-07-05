@@ -1,0 +1,9 @@
+Primeira linha do arquivo de teste.
+Segunda linha, um pouco mais curta.
+Esta e uma linha bem mais longa do que as anteriores, para testar o comportamento quando o BUFFER_SIZE e pequeno e precisa concatenar varias vezes ate encontrar o caractere de nova linha no meio do processo de leitura.
+
+Linha depois de uma linha vazia acima.
+x
+Outra linha normal aqui.
+Penultima linha do arquivo.
+Ultima linha sem quebra de linha no final

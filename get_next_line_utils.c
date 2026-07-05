@@ -6,7 +6,7 @@
 /*   By: hrique <hrique@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:32 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/04 17:41:51 by hrique           ###   ########.fr       */
+/*   Updated: 2026/07/04 19:52:41 by hrique           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		return (NULL);
 	len1 = 0;
 	len2 = 0;
-	while (s1)
+	while (s1[len1])
 		len1++;
-	while (s2)
+	while (s2[len2])
 		len2++;
-	strjoin = (char *)malloc(sizeof(char) * (len1 + len2 +1));
+	strjoin = ft_calloc((len1 + len2 + 1), sizeof(char));
 	if (!strjoin)
 		return (NULL);
 	ft_memcpy(strjoin, s1, len1);
@@ -59,16 +59,16 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	size;
 
 	size = 0;
-	while (s)
+	while (s[size])
 		size++;
 	if (size <= start)
 		return (ft_calloc(1, sizeof(char)));
 	if ((size - start) < len)
 		len = size - start;
-	ptr = malloc((len + 1) * sizeof(char));
+	ptr = ft_calloc(len + 1, sizeof(char));
 	if (ptr == NULL)
 		return (NULL);
-	ft_memcpy(ptr, &s[start], len + 1);
+	ft_memcpy(ptr, &s[start], len);
 	return (ptr);
 }
 
