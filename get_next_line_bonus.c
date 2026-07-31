@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hesantan <hesantan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 13:59:35 by hesantan          #+#    #+#             */
-/*   Updated: 2026/07/31 16:46:50 by hesantan         ###   ########.fr       */
+/*   Updated: 2026/07/31 16:47:16 by hesantan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*free_and_null(char *reading, char *storage)
 {
@@ -93,22 +93,22 @@ static char	*update_storage(char *storage)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*storage;
+	static char	*storage[FD_MAX];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_MAX)
 		return (NULL);
-	if (!storage)
-		storage = ft_calloc(1, sizeof(char));
-	if (!storage)
+	if (!storage[fd])
+		storage[fd] = ft_calloc(1, sizeof(char));
+	if (!storage[fd])
 		return (NULL);
-	if (!ft_strchr(storage, '\n'))
-		storage = read_line(storage, fd);
-	line = get_line(storage);
+	if (!ft_strchr(storage[fd], '\n'))
+		storage[fd] = read_line(storage[fd], fd);
+	line = get_line(storage[fd]);
 	if (!line)
 	{
-		storage = free_and_null(NULL, storage);
+		storage[fd] = free_and_null(NULL, storage[fd]);
 		return (NULL);
 	}
-	storage = update_storage(storage);
+	storage[fd] = update_storage(storage[fd]);
 	return (line);
 }
